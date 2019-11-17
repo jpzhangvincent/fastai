@@ -74,7 +74,7 @@ class TextClassificationInterpretation(ClassificationInterpretation):
         text, attn = self.intrinsic_attention(text, class_id)
         show_piece_attn(text.text.split(), to_np(attn), **kwargs)
 
-    def show_top_losses(self, k:int, max_len:int=70)->None:
+    def show_top_losses(self, k:int, max_len:int=70, return_df:bool):
         """
         Create a tabulation showing the first `k` texts in top_losses along with their prediction, actual,loss, and probability of
         actual class. `max_len` is the maximum number of tokens displayed.
@@ -97,3 +97,6 @@ class TextClassificationInterpretation(ClassificationInterpretation):
         df = pd.DataFrame({n:items[:,i] for i,n in enumerate(names)}, columns=names)
         with pd.option_context('display.max_colwidth', -1):
             display(HTML(df.to_html(index=False)))
+            
+        if return_df:
+            return df
